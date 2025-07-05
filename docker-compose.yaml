@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  # User code location (gRPC code server)
+  ingestion_pipelines_user_code:
+    image: ${DOCKERHUB_USERNAME}/ingestion_pipelines_user_code:latest
+    container_name: ingestion_pipelines_user_code
+    restart: always
+    environment:
+      DAGSTER_CURRENT_IMAGE: ${DOCKERHUB_USERNAME}/ingestion_pipelines_user_code:latest
+      DAGSTER_HOME: /opt/dagster/dagster_home
+    networks:
+      - ingestion_network
+    volumes:
+      - dagster_data:/opt/dagster/dagster_home
+
+  webserver:
+    image: ${DOCKERHUB_USERNAME}/dagster-runtime:latest
+    container_name: ingestion_webserver
+    entrypoint: ["dagster-webserver", "-h", "0.0.0.0", "-p", "3000", "-w", "/opt/dagster/workspace_docker.yaml"]
+    expose:
+      - "3000"
+    ports:
+      - "3000:3000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /tmp/io_manager_storage:/tmp/io_manager_storage
+      - dagster_data:/opt/dagster/dagster_home
+    networks:
+      - ingestion_network
+    depends_on:
+      ingestion_pipelines_user_code:
+        condition: service_started
+
+  daemon:
+    image: ${DOCKERHUB_USERNAME}/dagster-runtime:latest
+    container_name: ingestion_daemon
+    entrypoint: ["dagster-daemon", "run", "-w", "/opt/dagster/workspace_docker.yaml"]
+    restart: on-failure
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /tmp/io_manager_storage:/tmp/io_manager_storage
+      - dagster_data:/opt/dagster/dagster_home
+    networks:
+      - ingestion_network
+    depends_on:
+      ingestion_pipelines_user_code:
+        condition: service_started
+
+networks:
+  ingestion_network:
+    driver: bridge
+
+volumes:
+  dagster_data: 
