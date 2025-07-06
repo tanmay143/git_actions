@@ -61,7 +61,7 @@ jobs:
             cd "$HOME"
             cd dagster-app
             
-            git clone https://github.com/tanmay143/git_actions.git 
+            git clone https://github.com/tanmay143/git_actions
             
             git pull origin master
             # Directory containing docker-compose.yaml on the EC2 instance
