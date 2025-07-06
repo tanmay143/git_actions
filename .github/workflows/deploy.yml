@@ -29,8 +29,8 @@ jobs:
           context: .
           file: ./Dockerfile_user_code
           platforms: linux/arm64
-          cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/ingestion_pipelines_user_code:buildcache
-          cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/ingestion_pipelines_user_code:buildcache,mode=max
+          cache-from: type=registry,ref=docker.io/${{ secrets.DOCKERHUB_USERNAME }}/ingestion_pipelines_user_code:buildcache
+          cache-to: type=registry,ref=docker.io/${{ secrets.DOCKERHUB_USERNAME }}/ingestion_pipelines_user_code:buildcache,mode=max
           push: true
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/ingestion_pipelines_user_code:latest
