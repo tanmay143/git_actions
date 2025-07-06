@@ -1,0 +1,7 @@
+telemetry:
+  enabled: false
+
+loggers:
+  console:
+    config:
+      log_level: INFO

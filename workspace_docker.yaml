@@ -1,0 +1,4 @@
+load_from:
+  - grpc_server:
+      host: "ingestion_pipelines_user_code"
+      port: 4000
