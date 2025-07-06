@@ -60,11 +60,7 @@ jobs:
             set -e
             cd "$HOME"
             cd dagster-app
-            
-            git clone https://github.com/tanmay143/git_actions
-            
-            git pull origin master
-            # Directory containing docker-compose.yaml on the EC2 instance
+            cd git_actions
 
             export DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}
             docker login -u $DOCKERHUB_USERNAME -p ${{ secrets.DOCKERHUB_TOKEN }}
