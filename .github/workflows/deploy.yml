@@ -63,7 +63,7 @@ jobs:
             cd git_actions
 
             export DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}
-            sudo docker login -u $DOCKERHUB_USERNAME -p ${{ secrets.DOCKERHUB_TOKEN }}
-            sudo docker-compose pull
-            sudo docker-compose up -d
-            sudo docker image prune -f 
+            docker login -u $DOCKERHUB_USERNAME -p ${{ secrets.DOCKERHUB_TOKEN }}
+            docker-compose pull
+            docker-compose up -d
+            docker image prune -f 
